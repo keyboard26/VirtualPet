@@ -33,6 +33,7 @@ const moodImages = {
     dead: "assets/Dead_Axel_Tamagotchi.GIF",
     paused: "assets/pause.png"
 }
+const html = getHealthReportHTML();
 
 let isPaused = false;
 
@@ -54,7 +55,7 @@ function getMood() {
         }
         deathMessage.classList.add("show");
         return "dead";
-    } else if (pet.hunger > 8 || pet.energy < 3 || pet.happiness < 3) {
+    } else if (pet.hunger < 3 || pet.energy < 3 || pet.happiness < 3) {
         return "sad";
     } else{
         return "happy";
@@ -120,7 +121,6 @@ function decayStats() {
 
 
 reportBtn.addEventListener('click', () => {
-    const html = getHealthReportHTML();
     healthReportEl.innerHTML = html;
 
     // show + auto-hide after 2 seconds
@@ -129,6 +129,25 @@ reportBtn.addEventListener('click', () => {
         healthReportEl.classList.remove("show");
     }, 3000);
 });
+
+
+function getHealthReportHTML() {
+    if(getMood() === "dead") {
+        return `
+        <h2>Pet Health Report</h2>
+        <p>Your pet has passed away. Please take better care of it next time.</p>
+        `;
+    }
+    return `
+        <h2>Pet Health Report</h2>
+        
+        <ul>
+            <li><strong>Hunger:</strong> - ${pet.hunger < 3 ? "Very Hungry" : "Okay"}</li>
+            <li><strong>Energy:</strong> - ${pet.energy < 3 ? "Very tired" : "Energized"}</li>
+            <li><strong>Happiness:</strong> - ${pet.happiness < 4 ? "Very sad" : "Happy!"}</li>
+        </ul>
+    `;
+}
 
 resetBtn.addEventListener('click', () => {    
     resetPet();
@@ -175,30 +194,13 @@ function hideBtn() {
     }
 }
 
-function getHealthReportHTML() {
-    if(getMood() === "dead") {
-        return `
-        <h2>Pet Health Report</h2>
-        <p>Your pet has passed away. Please take better care of it next time.</p>
-        `;
-    }
-    return `
-        <h2>Pet Health Report</h2>
-        
-        <ul>
-            <li><strong>Hunger:</strong> - ${pet.hunger < 3 ? "Very Hungry" : "Okay"}</li>
-            <li><strong>Energy:</strong> - ${pet.energy < 3 ? "Very tired" : "Energized"}</li>
-            <li><strong>Happiness:</strong> - ${pet.happiness < 4 ? "Very sad" : "Happy!"}</li>
-        </ul>
-    `;
-}
-
 function pause(){
     isPaused = !isPaused;
     pauseBtn.textContent = isPaused ? "Play" : "Pause";
     updatePetImage();
     
     if (isPaused) {
+        healthReportEl.classList.remove("show");
         hideBtn()
     } else {
         showBtn()
