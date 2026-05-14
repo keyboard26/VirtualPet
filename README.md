@@ -1,4 +1,4 @@
-# About
+## About
 
 This is a Tamagotchi-style web game built in JavaScript, where you take care of an axolotl!
 
@@ -15,6 +15,7 @@ This project is based on a LinkedIn Learning tutorial project.
 - Image assets are directly from the tutorial
 
 ## What I Added
+<<<<<<< HEAD
 - Start page
 - Paused state
 - Reset option
