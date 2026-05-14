@@ -8,13 +8,28 @@
   </head>
   <body>
     <main class="container">
-      <img id="petImage" src="" alt="Virtual Pet" />
-      <div class="pet-status">
-        <p>Hunger: <span id="hunger">5</span></p>
-        <p>Energy: <span id="energy">5</span></p>
-        <p>Happiness: <span id="happiness">5</span></p>
+
+      <div class="startpage" id="startp">
+        <p>Virtual Axolotl</p>
+        <button id="startBtn">Start Game</button>
+      </div>
+
+      <img id="petImage" src="assets/Happy_Axel_Tamagotchi.GIF" alt="Virtual Pet" />
+      <div class="pet-status" id="stats">
+        <p>
+          Hunger: <span id="hunger">5</span>
+          <div class="bar"><div id="hungerBar"></div></div>
+        </p>
+        <p>
+          Energy: <span id="energy">5</span>
+          <div class="bar"><div id="energyBar"></div></div>
+        </p>
+        <p>
+          Happiness: <span id="happiness">5</span>
+          <div class="bar"><div id="happinessBar"></div></div>
+        </p>
         <div class="right-panel actions">
-          <button2 id="restartBtn">Restart</button2>
+          <button2 id="restartBtn">Reset</button2>
           <button2 id="pauseBtn">Pause</button2>
         </div>
       </div>
@@ -35,9 +50,7 @@
         <button id="bigRestart">Restart</button>
       </div>
 
-      <div class="death-message" id="deathMessage">
-        
-      </div>
+      <div class="death-message" id="deathMessage"></div>
 
 
     </main>
