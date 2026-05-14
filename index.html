@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Virtual Axolotl</title>
+  </head>
+  <body>
+    <main class="container">
+      <img id="petImage" src="" alt="Virtual Pet" />
+      <div class="pet-status">
+        <p>Hunger: <span id="hunger">5</span></p>
+        <p>Energy: <span id="energy">5</span></p>
+        <p>Happiness: <span id="happiness">5</span></p>
+        <div class="right-panel actions">
+          <button2 id="restartBtn">Restart</button2>
+          <button2 id="pauseBtn">Pause</button2>
+        </div>
+      </div>
+
+      
+
+      <div class="bottom-panel">
+        <div class="actions">
+          <button id="feedBtn">Feed</button>
+          <button id="playBtn">Play</button>
+          <button id="restBtn">Rest</button>
+          <button id="reportBtn">Get report</button>
+        </div>
+      </div>
+      <div id="healthReport" class="health-report"></div>
+
+      <div class="big-button">
+        <button id="bigRestart">Restart</button>
+      </div>
+
+      <div class="death-message" id="deathMessage">
+        
+      </div>
+
+
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
