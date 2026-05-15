@@ -4,10 +4,10 @@ This is a Tamagotchi-style web game built in JavaScript, where you take care of 
 
 ## Features
 - Mood system (happy, sad, etc)
-- Animated sprite changes based on mood
+- Animated sprite changes based on mood and actions
+- Dynamic stats
 - Pause functionality
 - Game-over state
-- Additional logic beyond the original tutorial
 
 ## Credits
 This project is based on a LinkedIn Learning tutorial project.
@@ -15,8 +15,11 @@ This project is based on a LinkedIn Learning tutorial project.
 - Image assets are directly from the tutorial
 
 ## What I Added
-- Start page
+- Start screen
+- Game over/restart screen
 - Paused state
 - Reset option
-- Stat bars
+- Stat bars and warnings
+- Feed/play/rest animations
+- Pop-up speech bubbles for actions
 - UX/UI improvements

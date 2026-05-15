@@ -17,6 +17,7 @@ const startBtn = document.getElementById('startBtn');
 const startp = document.getElementById('startp')
 const stats = document.getElementById('stats');
 const deathMessage = document.getElementById('deathMessage');
+const speechBubbles = document.getElementById('speechBubbles');
 const pet = {
     hunger: 5,
     energy: 5,
@@ -31,11 +32,19 @@ const moodImages = {
     happy: "assets/Happy_Axel_Tamagotchi.GIF",
     sad: "assets/Sad_Axel_Tamagotchi.GIF",
     dead: "assets/Dead_Axel_Tamagotchi.GIF",
-    paused: "assets/pause.png"
+    paused: "assets/pause.png",
+    sleep: "assets/sleep.png",
+    jumpy: "assets/jumpy.gif"
 }
-const html = getHealthReportHTML();
+const statWarnings = {
+    hunger: document.getElementById('hungerWarn'),
+    energy: document.getElementById('energyWarn'),
+    happiness: document.getElementById('happyWarn')
+}
 
 let isPaused = false;
+let isAsleep = false;
+let isJumpy = false;
 
 
 function clampStat(value) {
@@ -55,6 +64,10 @@ function getMood() {
         }
         deathMessage.classList.add("show");
         return "dead";
+    } else if (isAsleep) {
+        return "sleep";
+    } else if (isJumpy) {
+        return "jumpy";
     } else if (pet.hunger < 3 || pet.energy < 3 || pet.happiness < 3) {
         return "sad";
     } else{
@@ -66,12 +79,10 @@ function updatePetImage() {
     if (isPaused) {
         petImage.src = moodImages["paused"];
     } else {
-        let temp = getMood()
+        let temp = getMood();
         petImage.src = moodImages[temp];
-
-        if (temp === "dead") {hideBtn()}
-    }
-    
+        if (temp === "dead") {hideBtn()};
+    };
 }
 
 function updateStats() {
@@ -81,8 +92,27 @@ function updateStats() {
         const percent = (pet[stat] / 10) * 100;
         barEls[stat].style.width = percent + "%";
         barEls[stat].style.background = barColor(pet[stat]);
-    })
+        updatePetImage(stat);
+    });
+    updateWarnings();
     updatePetImage();
+}
+
+function updateWarnings() {
+    Object.keys(statWarnings).forEach((stat) => {
+        if (!statWarnings[stat]) return;
+        if (pet[stat] < 4) {
+            statWarnings[stat].classList.add("flashing2");
+        } else {
+            statWarnings[stat].classList.remove("flashing2");
+        };
+    });
+}
+
+function hideWarnings() {
+    Object.keys(statWarnings).forEach((stat) => {
+        statWarnings[stat].classList.remove("flashing2");
+    });
 }
 
 function barColor(value) {
@@ -91,37 +121,84 @@ function barColor(value) {
     return "#0ff";
 }
 
-function performAction(changes) {
+function performAction(changes, words) {
     if(getMood() === "dead") {return};
     Object.entries(changes).forEach(([stat, delta]) => {
         pet[stat] = clampStat(pet[stat] + delta);
     });
+    speechBubbles.textContent = words;
+    speechBubbles.classList.add("show");
     updateStats();
+    setTimeout(() => {
+        speechBubbles.classList.remove("show");
+    }, 2000);
 }
 
 feedBtn.addEventListener('click', () => {
-    performAction({hunger: +2, happiness: +1});
+    if (isAsleep) return;
+    isJumpy = true;
+    if (pet.hunger < 3) {
+        performAction({hunger: +2, happiness: +1}, "Feed me more!!");
+    } else {
+        performAction({hunger: +2, happiness: +1}, "Yummy!!");
+    }; 
+    setTimeout(() => {
+        isJumpy = false;
+        updateStats();
+    }, 500);
 });
 
 playBtn.addEventListener('click', () => {
-    performAction({happiness: +2, energy: -1, hunger: -1});
+    if (isAsleep) return;
+    isJumpy = true;
+    if (pet.happiness < 3) {
+        performAction({happiness: +2, energy: -1, hunger: -1}, "Let's play more!!");
+    };
+    performAction({happiness: +2, energy: -1, hunger: -1}, "Yay!");
+    setTimeout(() => {
+        isJumpy = false;
+        updateStats();
+    }, 500);
 });
 
 restBtn.addEventListener('click', () => {
-    performAction({energy: +2, hunger: -1});
+    isAsleep = true;
+    sleepBtn();
+    if (pet.energy < 4) {
+        performAction({energy: +2, hunger: -1}, "zzZZZZzzzz");
+    } else {
+        performAction({energy: +2, hunger: -1}, "zzz");
+    };
+    setTimeout(() => {
+        isAsleep = false;
+        updateStats();
+        sleepBtn();
+    }, 1900);
 });
 
+function sleepBtn() {
+    if (isAsleep) {
+        feedBtn.classList.add("sleeping");
+        playBtn.classList.add("sleeping");
+    } else {
+        feedBtn.classList.remove("sleeping");
+        playBtn.classList.remove("sleeping");
+    }
+}
+
 function decayStats() {
-    if (getMood() === "dead" || isPaused) {return};
+    if (getMood() === "dead" || isPaused || isAsleep) {return};
+    if (pet.hunger < 4 || pet.energy < 4) {
+        pet.happiness = clampStat(pet.happiness - 2);
+    } else {pet.happiness = clampStat(pet.happiness - 1);}
     pet.hunger = clampStat(pet.hunger - 1);
     pet.energy = clampStat(pet.energy - 1);
-    pet.happiness = clampStat(pet.happiness - 1);
     updateStats();
 }
 
 
 reportBtn.addEventListener('click', () => {
-    healthReportEl.innerHTML = html;
+    healthReportEl.innerHTML = getHealthReportHTML();
 
     // show + auto-hide after 2 seconds
     healthReportEl.classList.add("show");
@@ -131,13 +208,8 @@ reportBtn.addEventListener('click', () => {
 });
 
 
+
 function getHealthReportHTML() {
-    if(getMood() === "dead") {
-        return `
-        <h2>Pet Health Report</h2>
-        <p>Your pet has passed away. Please take better care of it next time.</p>
-        `;
-    }
     return `
         <h2>Pet Health Report</h2>
         
@@ -161,10 +233,14 @@ function resetPet(){
     pet.hunger = 5;
     pet.energy = 5;
     pet.happiness = 5;
+    isAsleep = false;
     if (isPaused) pause();
     updateStats();
     showBtn();
+    sleepBtn();
     stats.classList.remove("hide");
+    healthReportEl.classList.remove("show");
+    speechBubbles.classList.remove("show");
 }
 
 function showBtn() {
@@ -177,12 +253,15 @@ function showBtn() {
     reportBtn.classList.add("btnShow");
     pauseBtn.classList.add("btnShown");
     resetBtn.classList.add("btnShown");
+    updateWarnings();
 }
 
 function hideBtn() {
     feedBtn.classList.remove("btnShow");
     playBtn.classList.remove("btnShow");
     restBtn.classList.remove("btnShow");
+    feedBtn.classList.remove("sleeping");
+    playBtn.classList.remove("sleeping");
     reportBtn.classList.remove("btnShow");
     if (getMood() === "dead") {
         stats.classList.add("hide");
@@ -192,6 +271,8 @@ function hideBtn() {
         bigResetBtn.classList.add("show");
         bigResetBtn.classList.add("flashing")
     }
+    speechBubbles.classList.remove("show");
+    hideWarnings();
 }
 
 function pause(){

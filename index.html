@@ -17,17 +17,26 @@
       <img id="petImage" src="assets/Happy_Axel_Tamagotchi.GIF" alt="Virtual Pet" />
       <div class="pet-status" id="stats">
         <p>
-          Hunger: <span id="hunger">5</span>
+          Hunger: <span id="hunger">5
+            <div class="stat-warning" id="hungerWarn">!</div>
+          </span>
           <div class="bar"><div id="hungerBar"></div></div>
         </p>
+
         <p>
-          Energy: <span id="energy">5</span>
+          Energy: <span id="energy">5
+            <div class="stat-warning" id="energyWarn">!</div>
+          </span>
           <div class="bar"><div id="energyBar"></div></div>
         </p>
+
         <p>
-          Happiness: <span id="happiness">5</span>
+          Happiness: <span id="happiness">5
+            <div class="stat-warning" id="happyWarn">!</div>
+          </span>
           <div class="bar"><div id="happinessBar"></div></div>
         </p>
+
         <div class="right-panel actions">
           <button2 id="restartBtn">Reset</button2>
           <button2 id="pauseBtn">Pause</button2>
@@ -52,6 +61,7 @@
 
       <div class="death-message" id="deathMessage"></div>
 
+      <div class="speech-bubble" id="speechBubbles"></div>
 
     </main>
     <script src="script.js"></script>

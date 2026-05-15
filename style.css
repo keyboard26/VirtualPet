@@ -134,6 +134,25 @@ h1 {
   transition: width 0.3s ease;
 }
 
+.stat-warning {
+  position: absolute;
+  margin-top: -10px;
+  right: -30px;
+  font-size: 2rem;
+  opacity: 0;
+}
+
+@keyframes flash-animation2 {
+    10% { opacity: 0; }
+    50% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.flashing2 {
+    animation: flash-animation2 2s infinite;
+}
+
+
 /* Center the pet image and make it big */
 #petImage {
   position: absolute;
@@ -156,6 +175,7 @@ h1 {
     width: auto;
     height: auto;
     transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 .big-button button {
     font-family: 'Press Start 2P', cursive;
@@ -243,6 +263,11 @@ h1 {
     pointer-events: all;
 }
 
+.actions button.sleeping {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .actions button2 {
   font-family: 'Press Start 2P', cursive;
   font-size: 0.6rem;
@@ -313,9 +338,7 @@ h1 {
 
 .health-report.show {
   opacity: 1;
-  pointer-events: auto;
 }
-
 
 .health-report h2 {
   color: #aefeff;
@@ -331,4 +354,27 @@ h1 {
 .health-report li {
   margin: 8px 0;
   font-size: 1rem;
+}
+
+.speech-bubble {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  border-radius: 12px;
+  text-align: left;
+  padding: 15px 5px;
+  color: #003a5c;
+  background-color: #00fbffae;
+  font-family: 'Press Start 2P', cursive;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 7;
+  pointer-events: none;
+}
+
+.speech-bubble.show{
+  opacity: 1;
 }
