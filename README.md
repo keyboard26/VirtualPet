@@ -2,6 +2,8 @@
 
 This is a Tamagotchi-style web game built in JavaScript, where you take care of an axolotl!
 
+Live demo [here!](https://cwarm.me/axolotl)
+
 ## Features
 - Mood system (happy, sad, etc)
 - Animated sprite changes based on mood and actions
