@@ -122,7 +122,7 @@ function barColor(value) {
 }
 
 function performAction(changes, words) {
-    if(getMood() === "dead") {return};
+    if(getMood() === "dead") {isJumpy = false};
     Object.entries(changes).forEach(([stat, delta]) => {
         pet[stat] = clampStat(pet[stat] + delta);
     });
@@ -173,7 +173,7 @@ restBtn.addEventListener('click', () => {
         isAsleep = false;
         updateStats();
         sleepBtn();
-    }, 1900);
+    }, 1000);
 });
 
 function sleepBtn() {
